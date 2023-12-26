@@ -60,32 +60,7 @@ app.post('/signup', async (req, res) => {
 });
 
 
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
 
-    try {
-        // Find user by username
-        const user = await User.findOne({ username });
-
-        if (!user) {
-            return res.status(400).json({ message: "Invalid Username or Password" });
-        }
-
-        // Compare the provided password with the stored hashed password
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (passwordMatch) {
-            // Passwords match - create and return a JWT token
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            return res.json({ token });
-        } else {
-            return res.status(400).json({ message: "Invalid Username or Password" });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
-    }
-});
 
 
 const port = process.env.PORT || 3001;

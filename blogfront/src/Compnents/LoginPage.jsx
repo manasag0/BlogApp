@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
-
+import { Navigate } from 'react-router-dom'; // Fix the typo here
 export default function LoginPage() {
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
-  function login(ev){
+  const [redirect, setRedirect] = useState(false)
+   async function login(ev){
     ev.preventDefault();
-    fetch('http://localhost:5010/login',{
-      method:'POST',
-
-        body:JSON.stringify({
-          username:username,
-          password:password
-          })
-          ,
-      headers: {
-        "Content-Type": "application/json"
-      }
-
+   const response = await fetch('http://localhost:5010/login',{
+      method:'POST',body:JSON.stringify({username:username,password:password}),
+      headers: {"Content-Type": "application/json"},
+      credentials:'include'
     })
+    if(response.ok){
+      setRedirect(true)
+    }else{
+      alert("Wrong username or password")
+    }
   }
-
-
+  if (redirect) {
+    return <Navigate to={'/'} />; // Use Navigate instead of Navitage
+  }
   return (
     <div className='p-2 lg:mx-[300px]'>
       <form action='' className='lg:mx-10 my-[150px] sm:m-0 lg:my-[200px]' onSubmit={login} >
