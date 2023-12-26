@@ -8,24 +8,13 @@ export default function Signup() {
   const [email,setEmail] =useState('');
   async function signup(e){
     e.preventDefault();
-   const response = await fetch('http://localhost:5010/signup',{
-      method:'POST',
-      headers:{
-        "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          username,
-          password,
-          email
-          })
-    })
-    if(response.status===200){
-      alert("Signed up successfully")
+     const response =   await fetch('http://localhost:5010/signup', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ username,password, email })
+      })
+      console.log(response)
     }
-    else{
-      alert("Error signing up");
-      }
-  }
 
   return (
     <div className='p-2 lg:mx-[300px]'>
