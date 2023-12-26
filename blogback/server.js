@@ -6,7 +6,7 @@ const User = require('./models/User')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-app.use(cors())
+app.use(cors({credentials:true, origin:'http://localhost:3000'}))
 app.use(express.json())
 
 
@@ -59,8 +59,34 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
+    try {
+        // Find user by username
+        const user = await User.findOne({ username });
 
+        if (!user) {
+            return res.status(400).json({ message: "Invalid Username or Password" });
+        }
+
+        // Compare the provided password with the stored hashed password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (passwordMatch) {
+            // Passwords match - create a JWT token
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            // Set 'token' as a cookie and send a JSON response
+            res.cookie('token', token).json({ message: "Login successful" });
+        } else {
+            return res.status(400).json({ message: "Invalid Username or Password" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 
 const port = process.env.PORT || 3001;
