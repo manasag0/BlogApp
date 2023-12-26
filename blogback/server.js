@@ -29,16 +29,7 @@ app.post('/signup',async(req,res)=>{
     const {username, password, email} = req.body;
     res.json({ username,password,email});
 
-})
 const port = process.env.PORT || 3001;
 app.listen(port,()=>{
     console.log(`"Server is running on port ${port}"`);
 })
-
-//------------------------------APIs---------------------------
-// const apiRoute=require('./routes/api')
-// app.use("/api",apiRoute)
-//-----------------------Database Connection---------------------
-// var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost:27017/ProjectDB', { useNewUrlParser: true ,useUnified
-// Topology: true })
