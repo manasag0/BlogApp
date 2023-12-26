@@ -20,19 +20,7 @@ app.get('/', (req, res) => {
     res.send('welcome')
 })
 
-// app.post('/signup', async (req, res) => {
-//     const { username, password, email } = req.body;
 
-//     try {
-//         const userDoc = await User.create({ username, email, password:bcrypt.hashSync(password,salt) })
-//         res.json(userDoc)
-//     } catch (e) {
-//         console.log(e)
-//         res.status(400).json(e)
-//     }
-// })
-
-// Your existing setup and imports...
 
 // Signup route
 app.post('/signup', async (req, res) => {
