@@ -5,10 +5,13 @@ const mongoose = require('mongoose')
 const User = require('./models/User')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+var cookieParser = require('cookie-parser');
+const secret = 'asdfe356fghhvbkhgsr'
+
 require('dotenv').config();
 app.use(cors({credentials:true, origin:'http://localhost:3000'}))
 app.use(express.json())
-
+app.use(cookieParser())
 
 let uri = process.env.DATABASE_URL;
 mongoose.connect(
@@ -76,6 +79,18 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.get('/profile',(req,res)=>{
+    const {token} = req.cookies
+    jwt.verify(token,secret,{},(err,info)=>{
+        if(err) throw err;
+        res.json(info)
+    })
+res.json(req.cookies)
+})
+
+app.post('/logout',(req,res)=>{
+    res.clearCookie("token").json('OK')
+})
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
