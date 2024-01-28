@@ -14,8 +14,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 let uri = process.env.DATABASE_URL;
-mongoose.connect(
-    'mongodb+srv://manasa:manasa4nasa@cluster0.kirzzdu.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect( uri)
     .then(() => console.log("Connected to MongoDB!"))
     .catch((error) => console.log(error));
 
